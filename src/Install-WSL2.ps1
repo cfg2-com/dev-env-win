@@ -1,39 +1,59 @@
-# WSL2 Installation Script (Fixed)
-# Run as Administrator
-# Script runs wsl --install ✅ (features enabled)
-# Restart required ✅
-# Launch Ubuntu from Start Menu (downloads/installs distro) ✅
-# Re-run script (converts to WSL2) ✅
-# Corrected: --set-default-version works separately, not with --install [web:3]
+# Requires Administrator privileges to run successfully.
+# This script uses the modern 'wsl --install' command to enable WSL2,
+# install the kernel, and install the default Linux distribution (Ubuntu LTS).
 
-# Check if running as Administrator
-if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-    Write-Warning "Relaunching as Administrator..."
-    Start-Process PowerShell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
+## --- Administrator Check and Relaunch ---
+if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Start-Process powershell.exe -Verb RunAs -ArgumentList "-File `"$($myinvocation.MyCommand.Path)`""
     exit
 }
+## --- End Administrator Check ---
 
-# Update WSL to latest version
-Write-Host "Updating WSL..." -ForegroundColor Green
-wsl --update
-
-# Install WSL (enables features and installs default Ubuntu)
-Write-Host "Installing WSL with default Ubuntu..." -ForegroundColor Green
-wsl --install
-
-# Set WSL2 as default version (separate command)
-Write-Host "Setting WSL2 as default version..." -ForegroundColor Green
-wsl --set-default-version 2
-
-# Convert default distro to WSL2 if needed
-Write-Host "Converting default distribution to WSL2..." -ForegroundColor Green
-wsl --set-version $(wsl -l -q | Select-Object -First 1) 2
-
-# Prompt for restart
-Write-Host "WSL2 setup completed. Restart required." -ForegroundColor Yellow
-$restart = Read-Host "Restart now? (Y/N)"
-if ($restart -eq 'Y' -or $restart -eq 'y') {
-    Restart-Computer -Force
+function Run-Command {
+    param(
+        [string]$Command,
+        [string]$Description
+    )
+    Write-Host "--- $Description ---" -ForegroundColor Yellow
+    try {
+        Invoke-Expression $Command
+        if ($LASTEXITCODE -ne 0) {
+            Write-Warning "Command failed with exit code $LASTEXITCODE. Check the output for details."
+        } else {
+            Write-Host "Success!" -ForegroundColor Green
+        }
+    } catch {
+        Write-Error "An error occurred while running command: $_"
+    }
+    Write-Host ""
 }
 
-Write-Host "Post-restart: 'wsl --list --verbose' should show VERSION 2" -ForegroundColor Cyan
+# 1. Check for Windows Version Compatibility (Optional but good practice)
+Write-Host "--- Checking Windows Version ---" -ForegroundColor Yellow
+$osBuild = (Get-CimInstance Win32_OperatingSystem).BuildNumber
+if ($osBuild -lt 19041) {
+    Write-Warning "⚠️ Your Windows build ($osBuild) may be too old for the modern 'wsl --install' command. The manual installation method may be required."
+    Write-Host ""
+} else {
+    Write-Host "✅ Windows build is compatible (>$osBuild)." -ForegroundColor Green
+}
+
+# 2. Install WSL and the Default Distribution (Ubuntu LTS)
+# This command enables the necessary features, installs the kernel, sets WSL 2 as default,
+# and installs the latest Ubuntu LTS distribution.
+
+Run-Command -Command "wsl --install" -Description "Installing WSL2 and Default Ubuntu LTS Distribution"
+
+# 3. Inform User About Reboot Requirement
+Write-Host "🚨 **CRITICAL STEP:** The required features and Ubuntu LTS have been queued for installation." -ForegroundColor Red
+Write-Host "You **MUST RESTART YOUR COMPUTER** now for the installation to complete and the Ubuntu setup to begin." -ForegroundColor Red
+Write-Host "After restarting, Ubuntu will launch automatically to prompt you for a **username and password**." -ForegroundColor Red
+Write-Host ""
+Write-Host "You can manually reboot using the command: **Restart-Computer** (if you've saved this script)." -ForegroundColor Cyan
+
+# 4. Final Steps and Instructions
+Write-Host "--- Installation Instructions Summary ---" -ForegroundColor Yellow
+Write-Host "* **RESTART YOUR PC IMMEDIATELY**." -ForegroundColor DarkCyan
+Write-Host "* Ubuntu will launch after reboot. Follow the prompts to create your **UNIX username and password**." -ForegroundColor DarkCyan
+Write-Host "* To check your installation, open PowerShell after reboot and run: **wsl -l -v**" -ForegroundColor DarkCyan
+Write-Host "* The installed distribution name will likely be: **Ubuntu**" -ForegroundColor DarkCyan
