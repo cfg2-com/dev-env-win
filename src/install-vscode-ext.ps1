@@ -13,7 +13,8 @@ $extensions = @(
                 "vscjava.vscode-maven",
                 "vscjava.vscode-java-dependency",
                 "vscjava.vscode-java-test",
-                "mechatroner.rainbow-csv"
+                "mechatroner.rainbow-csv",
+                "bmewburn.vscode-intelephense-client"
                 )
 foreach ($ext in $extensions) {
     code --install-extension $ext --force
