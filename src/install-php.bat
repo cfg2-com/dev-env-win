@@ -1,0 +1,1 @@
+winget install PHP.PHP
