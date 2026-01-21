@@ -1,1 +1,1 @@
-gemini extensions install https://github.com/gemini-cli-extensions/jules --auto-update
+npm install -g @google/jules
