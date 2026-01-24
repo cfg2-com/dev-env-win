@@ -50,6 +50,9 @@ call :CreateDir "%BASE_PATH%\Temp - Local"
 REM Creating an "Agents" folder inside the user's home folder
 call :CreateDir "%BASE_PATH%\Agents"
 
+REM Creating an Agents "Skills" folder inside the user's home folder
+call :CreateDir "%BASE_PATH%\Agents\Skills"
+
 REM --- End of Script ---
 
 echo.
