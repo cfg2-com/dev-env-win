@@ -29,17 +29,42 @@ if exist "%TARGET_DIR%" (
 REM Return control to where the subroutine was called
 goto :eof
 
+:SetupCloudHome
+echo.
+if defined CLOUD_HOME (
+    echo CLOUD_HOME is set to %CLOUD_HOME%
+    goto :eof
+)
+
+echo.
+set /p "USER_CLOUD_PATH=Provide the full path to the root of your preferred cloud drive: "
+
+if not "%USER_CLOUD_PATH%"=="" (
+    if exist "%USER_CLOUD_PATH%" (
+        echo Setting CLOUD_HOME to "%USER_CLOUD_PATH%"
+        setx CLOUD_HOME "%USER_CLOUD_PATH%"
+        set "CLOUD_HOME=%USER_CLOUD_PATH%"
+    ) else (
+        echo Error: The directory "%USER_CLOUD_PATH%" does not exist.
+    )
+)
+goto :eof
+
 REM =============================
 REM --- Main Script Execution ---
 REM =============================
 :Main
 
+REM --------------------------------
 REM 1. Define the base path (e.g., the user's home folder)
+REM --------------------------------
 set "BASE_PATH=%USERPROFILE%"
 
 echo Starting directory creation process in the base path: "%BASE_PATH%"
 
+REM --------------------------------
 REM 2. Call the function for each directory you want to create
+REM --------------------------------
 
 REM Creating "Dev" inside the user's home folder
 call :CreateDir "%BASE_PATH%\Dev"
@@ -53,8 +78,15 @@ call :CreateDir "%BASE_PATH%\Agents"
 REM Creating an Agents "Skills" folder inside the user's home folder
 call :CreateDir "%BASE_PATH%\Agents\Skills"
 
+REM --------------------------------
+REM 3. Handle CLOUD_HOME setup
+REM --------------------------------
+
+REM Check for CLOUD_HOME environment variable
+call :SetupCloudHome
+
 REM --- End of Script ---
 
 echo.
-echo All directory operations complete.
-pause
+REM echo All directory operations complete.
+REM pause

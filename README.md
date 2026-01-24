@@ -27,4 +27,6 @@ CALL "%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\startup-dev-env-wi
 From PowerShell:
 ```
 & "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\startup-dev-env-win.bat"
+
+$env:CLOUD_HOME = [System.Environment]::GetEnvironmentVariable("CLOUD_HOME", "User")
 ```
