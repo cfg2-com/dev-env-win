@@ -36,7 +36,15 @@ if defined CLOUD_HOME (
     goto :eof
 )
 
+REM Check registry for CLOUD_HOME to handle stale command prompt sessions
+for /f "tokens=2,*" %%A in ('reg query HKCU\Environment /v CLOUD_HOME 2^>nul') do (
+    echo Found CLOUD_HOME in registry: "%%B"
+    set "CLOUD_HOME=%%B"
+    goto :eof
+)
+
 echo.
+set "USER_CLOUD_PATH="
 set /p "USER_CLOUD_PATH=Provide the full path to the root of your preferred cloud drive: "
 
 if not "%USER_CLOUD_PATH%"=="" (
@@ -78,10 +86,22 @@ REM Check for CLOUD_HOME environment variable
 call :SetupCloudHome
 
 REM --------------------------------
-REM 4. Setup Agentic Coding
+REM 4. Setup DEV_HOME
 REM --------------------------------
 echo.
-echo Copying Agent directory...
+echo Setting DEV_HOME
+
+if not defined DEV_HOME (
+    setx DEV_HOME "%BASE_PATH%\Dev"
+    set "DEV_HOME=%BASE_PATH%\Dev"
+)
+echo DEV_HOME is set to %DEV_HOME%
+
+REM --------------------------------
+REM 5. Setup Agentic Coding
+REM --------------------------------
+echo.
+echo Creating Agent directory...
 
 call :CreateDir "%BASE_PATH%\Agent"
 
