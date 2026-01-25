@@ -33,4 +33,4 @@ $env:CLOUD_HOME = [System.Environment]::GetEnvironmentVariable("CLOUD_HOME", "Us
 
 ## Global Skills
 
-Assuming you're using the skills defined in this project you will need to create a workspace specific junction for your agent of choice.
+Assuming you're using the skills defined in this project you will likely need to create a workspace specific copy. Use `/src/setup-workspace.bat` for that.
