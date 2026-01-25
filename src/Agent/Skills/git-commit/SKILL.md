@@ -49,13 +49,22 @@ Use this skill to help guide commiting changes and pushing them to remote reposi
         Closes #42
         ```
 
-6.  **Commit the Changes:**
+6.  **Review and Confirm:**
+    *   List the files staged for commit:
+        ```bash
+        git diff --name-only --staged
+        ```
+    *   Display the fully assembled commit message.
+    *   Ask the user to confirm the message and the file list.
+    *   Allow the user to edit the message if necessary before proceeding.
+
+7.  **Commit the Changes:**
     *   Use the generated message to commit the changes:
         ```bash
         git commit -m "<subject>" -m "<body>" -m "<footer>"
         ```
     *   Alternatively, save the message to a file and use `git commit -F <file>`.
 
-7.  **Push Changes (Optional):**
+8.  **Push Changes (Optional):**
     *   Ask the user if they want to push the changes to the remote repository.
     *   If yes, execute `git push`.
