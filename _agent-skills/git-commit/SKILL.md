@@ -50,3 +50,7 @@ This skill guides the agent in creating a conventional and descriptive git commi
         git commit -m "<subject>" -m "<body>" -m "<footer>"
         ```
     *   Alternatively, save the message to a file and use `git commit -F <file>`.
+
+7.  **Push Changes (Optional):**
+    *   Ask the user if they want to push the changes to the remote repository.
+    *   If yes, execute `git push`.
