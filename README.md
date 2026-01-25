@@ -30,3 +30,17 @@ From PowerShell:
 
 $env:CLOUD_HOME = [System.Environment]::GetEnvironmentVariable("CLOUD_HOME", "User")
 ```
+
+## Global Skills
+
+Assuming you're using the skills defined in this project you will need to create a workspace specific junction for your agent of choice.
+
+From Command Prompt:
+```
+mklink /J ".agent-skills" "%USERPROFILE%\Agents\Skills"
+```
+
+From PowerShell:
+```
+New-Item -ItemType Junction -Path ".agent-skills" -Target "$env:USERPROFILE\Agents\Skills"
+```
