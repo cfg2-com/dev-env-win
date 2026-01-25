@@ -78,6 +78,15 @@ call :CreateDir "%BASE_PATH%\Agents"
 REM Creating an Agents "Skills" folder inside the user's home folder
 call :CreateDir "%BASE_PATH%\Agents\Skills"
 
+REM Creating ".gemini" folder inside the user's home folder
+call :CreateDir "%BASE_PATH%\.gemini"
+
+REM Create directory junction for skills
+if not exist "%BASE_PATH%\.gemini\skills" (
+    echo Creating directory junction for skills...
+    mklink /J "%BASE_PATH%\.gemini\skills" "%BASE_PATH%\Agents\Skills"
+)
+
 REM --------------------------------
 REM 3. Handle CLOUD_HOME setup
 REM --------------------------------
