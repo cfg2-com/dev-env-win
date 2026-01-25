@@ -1,6 +1,11 @@
+---
+name: git-commit
+description: Guidelines for git stage, diff, commit, and push
+---
+
 # Git Commit Skill
 
-This skill guides the agent in creating a conventional and descriptive git commit message.
+Use this skill to help guide commiting changes and pushing them to remote repositories.
 
 ## Procedure
 

@@ -48,8 +48,8 @@ if not exist "%WORK_DIR%" (
     goto :eof
 )
 
-REM Creating ".agent-skills" inside the target folder
-set "SKILLS_DIR=%WORK_DIR%\.agent-skills"
+REM Creating "_agent-skills" inside the target folder
+set "SKILLS_DIR=%WORK_DIR%\_agent-skills"
 call :CreateDir "%SKILLS_DIR%"
 
 echo.
