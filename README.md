@@ -41,12 +41,12 @@ While the `startup-dev-env-win.bat` creates a location and sets up symlinks for 
 
 From PowerShell:
 ```
-Copy-Item -Path "src\Agent\Skills\*" -Destination "$HOME\Agent\Skills" -Recurse -Force
+Copy-Item -Path ".github\skills\*" -Destination "$HOME\Agent\Skills" -Recurse -Force
 ```
 
 From Command Prompt:
 ```
-xcopy "src\Agent\Skills" "%USERPROFILE%\Agent\Skills" /E /I /Y
+xcopy ".github\skills" "%USERPROFILE%\Agent\Skills" /E /I /Y
 ```
 
 ### Workspace Skills
