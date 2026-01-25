@@ -5,7 +5,7 @@ This skill guides the agent in creating a conventional and descriptive git commi
 ## Procedure
 
 1.  **Stage and Analyze Changes:**
-    *   Execute `git add .` to stage all changed files.
+    *   Execute `git add -A` to stage all changed files in the workspace.
     *   Execute `git diff --staged` to get the full diff of changes to be committed.
     *   Review the diff to understand the scope and nature of the changes.
 
