@@ -63,29 +63,12 @@ set "BASE_PATH=%USERPROFILE%"
 echo Starting directory creation process in the base path: "%BASE_PATH%"
 
 REM --------------------------------
-REM 2. Call the function for each directory you want to create
+REM 2. Create Required Directories
 REM --------------------------------
 
-REM Creating "Dev" inside the user's home folder
 call :CreateDir "%BASE_PATH%\Dev"
 
-REM Creating a "Temp - Local" folder inside the user's home folder
 call :CreateDir "%BASE_PATH%\Temp - Local"
-
-REM Creating an "Agents" folder inside the user's home folder
-call :CreateDir "%BASE_PATH%\Agents"
-
-REM Creating an Agents "Skills" folder inside the user's home folder
-call :CreateDir "%BASE_PATH%\Agents\Skills"
-
-REM Creating ".gemini" folder inside the user's home folder
-call :CreateDir "%BASE_PATH%\.gemini"
-
-REM Create directory junction for skills
-if not exist "%BASE_PATH%\.gemini\skills" (
-    echo Creating directory junction for skills...
-    mklink /J "%BASE_PATH%\.gemini\skills" "%BASE_PATH%\Agents\Skills"
-)
 
 REM --------------------------------
 REM 3. Handle CLOUD_HOME setup
@@ -93,6 +76,38 @@ REM --------------------------------
 
 REM Check for CLOUD_HOME environment variable
 call :SetupCloudHome
+
+REM --------------------------------
+REM 4. Setup Agentic Coding
+REM --------------------------------
+echo.
+echo Copying Agent directory...
+
+call :CreateDir "%BASE_PATH%\Agent"
+
+call :CreateDir "%BASE_PATH%\Agent\Skills"
+
+echo.
+set "SOURCE_DIR=%BASE_PATH%\Agent\Skills"
+
+:: Define the target agent folders
+set "CLAUDE_DIR=%USERPROFILE%\.claude\skills"
+set "GEMINI_DIR=%USERPROFILE%\.gemini\skills"
+set "CURSOR_DIR=%USERPROFILE%\.cursor\skills"
+set "COPILOT_DIR=%USERPROFILE%\.copilot\skills"
+
+echo Linking Agent Skills
+
+:: Function-like block to create junctions
+for %%A in ("%CLAUDE_DIR%" "%GEMINI_DIR%" "%CURSOR_DIR%" "%COPILOT_DIR%") do (
+    if not exist "%%~dpA" mkdir "%%~dpA"
+    if exist "%%~A" (
+        echo [SKIP] %%~A already exists. Delete it manually if you want to re-link.
+    ) else (
+        echo [LINKING] %%~A --^> %SOURCE_DIR%
+        mklink /J "%%~A" "%SOURCE_DIR%"
+    )
+)
 
 REM --- End of Script ---
 

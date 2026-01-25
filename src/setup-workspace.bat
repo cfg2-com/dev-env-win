@@ -48,11 +48,11 @@ if not exist "%WORK_DIR%" (
     goto :eof
 )
 
-REM Creating "_agent-skills" inside the target folder
-set "SKILLS_DIR=%WORK_DIR%\_agent-skills"
-call :CreateDir "%SKILLS_DIR%"
+REM Creating ".github/skills" inside the target folder
+call :CreateDir "%WORK_DIR\.github"
+call :CreateDir "%WORK_DIR\.github\skills"
 
 echo.
 echo Copying skills (skipping existing files)...
 REM Robocopy flags: /E (recursive), /XC /XN /XO (exclude changed/newer/older = no overwrite), /R:0 /W:0 (no retry)
-robocopy "%USERPROFILE%\Agents\Skills" "%SKILLS_DIR%" /E /XC /XN /XO /R:0 /W:0
+robocopy "%USERPROFILE%\Agent\Skills" "%WORK_DIR\.github\skills" /E /XC /XN /XO /R:0 /W:0
