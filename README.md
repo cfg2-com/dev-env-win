@@ -5,7 +5,7 @@ See the src folder for individual scripts
 
 ## Setup
 
-The "startup" script is safe to rerun multiple time or enable any time you start your computer:
+The "startup" script is safe to rerun multiple times or enable any time you start your computer:
 
 From the command prompt:
 ```
