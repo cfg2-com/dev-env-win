@@ -1,1 +1,3 @@
-winget install PHP.PHP
+winget search php
+
+winget install PHP.PHP.8.4
