@@ -10,6 +10,7 @@ $extensions = @(
                 "Google.gemini-cli-vscode-ide-companion", 
                 "ms-python.python", 
                 "ms-vscode.PowerShell",
+                "ms-vscode.vscode-speech",
                 "redhat.java",
                 "vscjava.vscode-maven",
                 "vscjava.vscode-java-dependency",
