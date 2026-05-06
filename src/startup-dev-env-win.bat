@@ -64,29 +64,31 @@ REM =============================
 :Main
 
 REM --------------------------------
-REM 1. Define the base path (e.g., the user's home folder)
+REM Define the base path (e.g., the user's home folder)
 REM --------------------------------
 set "BASE_PATH=%USERPROFILE%"
 
 echo Starting directory creation process in the base path: "%BASE_PATH%"
 
 REM --------------------------------
-REM 2. Create Required Directories
+REM Create Required Directories
 REM --------------------------------
+
+call :CreateDir "%BASE_PATH%\Bin"
 
 call :CreateDir "%BASE_PATH%\Dev"
 
 call :CreateDir "%BASE_PATH%\Temp - Local"
 
 REM --------------------------------
-REM 3. Handle CLOUD_HOME setup
+REM Handle CLOUD_HOME setup
 REM --------------------------------
 
 REM Check for CLOUD_HOME environment variable
 call :SetupCloudHome
 
 REM --------------------------------
-REM 4. Setup DEV_HOME
+REM Setup DEV_HOME
 REM --------------------------------
 echo.
 echo Setting DEV_HOME
@@ -98,7 +100,24 @@ if not defined DEV_HOME (
 echo DEV_HOME is set to %DEV_HOME%
 
 REM --------------------------------
-REM 5. Setup Agentic Coding
+REM Put %BASE_PATH%\Bin in PATH
+REM Intentially using registry to get around 1024 char limit of setx
+REM --------------------------------
+echo.
+echo Setting PATH
+
+set "BIN_PATH=%BASE_PATH%\Bin"
+echo %PATH% | findstr /i /c:"%BIN_PATH%" >nul
+if errorlevel 1 (
+    echo Adding "%BIN_PATH%" to PATH.
+    reg add "HKCU\Environment" /v PATH /t REG_EXPAND_SZ /d "%PATH%;%BIN_PATH%" /f
+    set "PATH=%PATH%;%BIN_PATH%"
+) else (
+    echo "%BIN_PATH%" already in PATH. Skipping.
+)
+
+REM --------------------------------
+REM Setup Agentic Coding
 REM --------------------------------
 echo.
 echo Creating Agent directory...
