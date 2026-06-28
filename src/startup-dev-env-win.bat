@@ -74,7 +74,9 @@ REM --------------------------------
 REM Create Required Directories
 REM --------------------------------
 
-call :CreateDir "%BASE_PATH%\Bin"
+call :CreateDir "%BASE_PATH%\scripts"
+
+call :CreateDir "%BASE_PATH%\tools"
 
 call :CreateDir "%BASE_PATH%\Dev"
 
@@ -100,20 +102,37 @@ if not defined DEV_HOME (
 echo DEV_HOME is set to %DEV_HOME%
 
 REM --------------------------------
-REM Put %BASE_PATH%\Bin in PATH
-REM Intentially using registry to get around 1024 char limit of setx
+REM Put %BASE_PATH%\scripts in PATH
+REM Intentionally using registry to get around 1024 char limit of setx
 REM --------------------------------
 echo.
 echo Setting PATH
 
-set "BIN_PATH=%BASE_PATH%\Bin"
-echo %PATH% | findstr /i /c:"%BIN_PATH%" >nul
+set "SCRIPTS_PATH=%BASE_PATH%\scripts"
+echo %PATH% | findstr /i /c:"%SCRIPTS_PATH%" >nul
 if errorlevel 1 (
-    echo Adding "%BIN_PATH%" to PATH.
-    reg add "HKCU\Environment" /v PATH /t REG_EXPAND_SZ /d "%PATH%;%BIN_PATH%" /f
-    set "PATH=%PATH%;%BIN_PATH%"
+    echo Adding "%SCRIPTS_PATH%" to PATH.
+    reg add "HKCU\Environment" /v PATH /t REG_EXPAND_SZ /d "%PATH%;%SCRIPTS_PATH%" /f
+    set "PATH=%PATH%;%SCRIPTS_PATH%"
 ) else (
-    echo "%BIN_PATH%" already in PATH. Skipping.
+    echo "%SCRIPTS_PATH%" already in PATH. Skipping.
+)
+
+REM --------------------------------
+REM Put %BASE_PATH%\tools in PATH
+REM Intentionally using registry to get around 1024 char limit of setx
+REM --------------------------------
+echo.
+echo Setting PATH
+
+set "TOOLS_PATH=%BASE_PATH%\tools"
+echo %PATH% | findstr /i /c:"%TOOLS_PATH%" >nul
+if errorlevel 1 (
+    echo Adding "%TOOLS_PATH%" to PATH.
+    reg add "HKCU\Environment" /v PATH /t REG_EXPAND_SZ /d "%PATH%;%TOOLS_PATH%" /f
+    set "PATH=%PATH%;%TOOLS_PATH%"
+) else (
+    echo "%TOOLS_PATH%" already in PATH. Skipping.
 )
 
 REM --------------------------------

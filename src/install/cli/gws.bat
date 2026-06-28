@@ -1,7 +1,7 @@
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
 
-set "BIN_DIR=%USERPROFILE%\Bin"
+set "BIN_DIR=%USERPROFILE%\tools"
 set "TEMP_DIR=%TEMP%\gws-install"
 set "ARCH=%PROCESSOR_ARCHITECTURE%"
 
