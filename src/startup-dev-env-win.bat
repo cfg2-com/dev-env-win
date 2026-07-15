@@ -2,9 +2,9 @@
 
 goto :Main
 
-REM ========================================
-REM --- Function Definition (Subroutine) ---
-REM ========================================
+REM ==========================================
+REM --- Function Definitions (Subroutines) ---
+REM ==========================================
 :CreateDir
 REM %~1 strips surrounding quotes from the argument
 set "TARGET_DIR=%~1"
@@ -67,6 +67,7 @@ REM --------------------------------
 REM Define the base path (e.g., the user's home folder)
 REM --------------------------------
 set "BASE_PATH=%USERPROFILE%"
+set "CUR_SCRIPT_DIR=%~dp0"
 
 echo Starting directory creation process in the base path: "%BASE_PATH%"
 
@@ -74,13 +75,11 @@ REM --------------------------------
 REM Create Required Directories
 REM --------------------------------
 
-call :CreateDir "%BASE_PATH%\scripts"
-
-call :CreateDir "%BASE_PATH%\tools"
+call :CreateDir "%BASE_PATH%\Tools"
 
 call :CreateDir "%BASE_PATH%\Dev"
 
-call :CreateDir "%BASE_PATH%\Temp - Local"
+call :CreateDir "%BASE_PATH%\TempLocal"
 
 REM --------------------------------
 REM Handle CLOUD_HOME setup
@@ -102,30 +101,13 @@ if not defined DEV_HOME (
 echo DEV_HOME is set to %DEV_HOME%
 
 REM --------------------------------
-REM Put %BASE_PATH%\scripts in PATH
+REM Put %BASE_PATH%\Tools in PATH
 REM Intentionally using registry to get around 1024 char limit of setx
 REM --------------------------------
 echo.
 echo Setting PATH
 
-set "SCRIPTS_PATH=%BASE_PATH%\scripts"
-echo %PATH% | findstr /i /c:"%SCRIPTS_PATH%" >nul
-if errorlevel 1 (
-    echo Adding "%SCRIPTS_PATH%" to PATH.
-    reg add "HKCU\Environment" /v PATH /t REG_EXPAND_SZ /d "%PATH%;%SCRIPTS_PATH%" /f
-    set "PATH=%PATH%;%SCRIPTS_PATH%"
-) else (
-    echo "%SCRIPTS_PATH%" already in PATH. Skipping.
-)
-
-REM --------------------------------
-REM Put %BASE_PATH%\tools in PATH
-REM Intentionally using registry to get around 1024 char limit of setx
-REM --------------------------------
-echo.
-echo Setting PATH
-
-set "TOOLS_PATH=%BASE_PATH%\tools"
+set "TOOLS_PATH=%BASE_PATH%\Tools"
 echo %PATH% | findstr /i /c:"%TOOLS_PATH%" >nul
 if errorlevel 1 (
     echo Adding "%TOOLS_PATH%" to PATH.
@@ -136,35 +118,19 @@ if errorlevel 1 (
 )
 
 REM --------------------------------
-REM Setup Agentic Coding
+REM Copy tools from repo to %BASE_PATH%\Tools
 REM --------------------------------
 echo.
-echo Creating Agent directory...
-
-call :CreateDir "%BASE_PATH%\Agent"
-
-call :CreateDir "%BASE_PATH%\Agent\Skills"
-
-echo.
-set "SOURCE_DIR=%BASE_PATH%\Agent\Skills"
-
-:: Define the target agent folders
-set "CLAUDE_DIR=%USERPROFILE%\.claude\skills"
-set "GEMINI_DIR=%USERPROFILE%\.gemini\skills"
-set "CURSOR_DIR=%USERPROFILE%\.cursor\skills"
-set "COPILOT_DIR=%USERPROFILE%\.copilot\skills"
-
-echo Linking Agent Skills
-
-:: Function-like block to create junctions
-for %%A in ("%CLAUDE_DIR%" "%GEMINI_DIR%" "%CURSOR_DIR%" "%COPILOT_DIR%") do (
-    if not exist "%%~dpA" mkdir "%%~dpA"
-    if exist "%%~A" (
-        echo [SKIP] %%~A already exists. Delete it manually if you want to re-link.
+echo Copying files from "%CUR_SCRIPT_DIR%tools" to "%TOOLS_PATH%"
+if exist "%CUR_SCRIPT_DIR%tools" (
+    robocopy "%CUR_SCRIPT_DIR%tools" "%TOOLS_PATH%" /E /NFL /NDL /NJH /NJS /NP >nul
+    if errorlevel 8 (
+        echo Warning: Some files may not have copied successfully.
     ) else (
-        echo [LINKING] %%~A --^> %SOURCE_DIR%
-        mklink /J "%%~A" "%SOURCE_DIR%"
+        echo Tools copied successfully.
     )
+) else (
+    echo Warning: Source folder "%CUR_SCRIPT_DIR%tools" was not found. Skipping copy.
 )
 
 REM --- End of Script ---
