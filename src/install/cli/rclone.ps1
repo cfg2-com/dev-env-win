@@ -1,5 +1,5 @@
 # Define where you want to store the rclone executable
-$DestinationFolder = "$env:USERPROFILE\Bin"
+$DestinationFolder = "$env:TOOLS_HOME"
 $ZipPath = "$env:TEMP\rclone.zip"
 $ExtractPath = "$env:TEMP\rclone_extracted"
 

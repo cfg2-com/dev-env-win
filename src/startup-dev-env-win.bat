@@ -101,13 +101,25 @@ if not defined DEV_HOME (
 echo DEV_HOME is set to %DEV_HOME%
 
 REM --------------------------------
-REM Put %BASE_PATH%\Tools in PATH
+REM Setup TOOLS_HOME
+REM --------------------------------
+echo.
+echo Setting TOOLS_HOME
+
+if not defined TOOLS_HOME (
+    setx TOOLS_HOME "%BASE_PATH%\Tools"
+    set "TOOLS_HOME=%BASE_PATH%\Tools"
+)
+echo TOOLS_HOME is set to %TOOLS_HOME%
+
+REM --------------------------------
+REM Put %TOOLS_HOME% in PATH
 REM Intentionally using registry to get around 1024 char limit of setx
 REM --------------------------------
 echo.
 echo Setting PATH
 
-set "TOOLS_PATH=%BASE_PATH%\Tools"
+set "TOOLS_PATH=%TOOLS_HOME%"
 echo %PATH% | findstr /i /c:"%TOOLS_PATH%" >nul
 if errorlevel 1 (
     echo Adding "%TOOLS_PATH%" to PATH.
