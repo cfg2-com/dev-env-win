@@ -5,9 +5,15 @@ See the src folder for individual scripts
 
 ## Setup
 
-The `.\src\startup-dev-env-win.bat` is safe to rerun multiple times or enable any time you start your computer:
+The `.\src\startup-dev-env-win.bat` is safe to rerun multiple times or enable any time you start your computer.
+
+Recommended to run `.\src\startup-dev-env-win.bat` once from this repo then include it in your startup one of two ways...
+
+### Shortcut to startup
 
 By far the simplest setup to to simply add a shortcut to `src\startup-dev-env-win.bat` in your `shell:startup` folder.
+
+### Independent copy
 
 Otherwise, if you want an independent copy, you can run the following:
 
