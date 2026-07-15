@@ -31,25 +31,3 @@ From Command Prompt:
 CALL "%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\startup-dev-env-win.bat"
 ```
 
-## Agentic Coding
-
-This repo provides some basic agentic coding skills.
-
-### Global Skills
-
-While the `startup-dev-env-win.bat` creates a location and sets up symlinks for global skills, you still need to populate them (generally one time only). You can copy the skills in this repo with the following:
-
-From PowerShell:
-```
-Copy-Item -Path ".github\skills\*" -Destination "$HOME\Agent\Skills" -Recurse -Force
-```
-
-From Command Prompt:
-```
-xcopy ".github\skills" "%USERPROFILE%\Agent\Skills" /E /I /Y
-```
-
-### Workspace Skills
-
-If the "Global Skills" are not working/being recognized, you will likely need to create a workspace specific copy. 
-To do that, copy `/src/setup-workspace.bat` to the root of your workspace and run it.
