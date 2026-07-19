@@ -1,4 +1,3 @@
-# Modified by Cursor
 <#
 .SYNOPSIS
     Creates a directory junction pointing to an existing folder.
