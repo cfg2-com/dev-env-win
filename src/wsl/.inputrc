@@ -1,0 +1,10 @@
+# Copy this file to your home directory as .inputrc to customize your shell input behavior.
+# ex: cp src/wsl/.inputrc ~/.inputrc
+
+# Custom history navigation using Arrow Keys
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+
+# Tab completion settings
+set show-all-if-ambiguous on
+set completion-ignore-case on
