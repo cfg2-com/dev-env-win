@@ -1,5 +1,4 @@
 <#
-# Code in this file has been modified by Cursor.
 .SYNOPSIS
     Downloads a Chrome Web Store extension as a CRX file and optionally unpacks it.
 
